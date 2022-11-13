@@ -1,5 +1,5 @@
 {
-  "name": "myviroapp",
+  "name": "Cardiology",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "link:assets": "npx react-native link && (cd ios && pod install)"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
@@ -16,8 +17,10 @@
     "react": "17.0.2",
     "react-native": "0.65.1",
     "react-native-elements": "^3.4.2",
+    "react-native-icomoon": "^0.1.1",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
+    "react-native-svg": "^13.5.0",
     "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {

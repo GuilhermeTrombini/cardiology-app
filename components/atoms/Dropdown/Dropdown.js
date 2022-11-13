@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Icon} from 'react-native-elements';
+import Icon from '../icon/Icon';
 import SText from '../Text/SText';
 
-const Dropdown = ({label, list, onSelect}) => {
+const Dropdown = ({label, list, initialValue, onSelect}) => {
   const [visible, setVisible] = useState(false);
   const DropdownButton = useRef();
   const [dropdownTop, setDropdownTop] = useState(0);
-  const [selected, setSelected] = useState(undefined);
+  const [selected, setSelected] = useState(initialValue);
 
   const openDropdown = () => {
     DropdownButton.current.measure((_fx, _fy, _w, h, _px, py) => {
@@ -35,26 +35,26 @@ const Dropdown = ({label, list, onSelect}) => {
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity style={styles.item} onPress={() => onItemPress(item)}>
-        <SText>{item}</SText>
+        <SText style={styles.buttonText}>{item}</SText>
       </TouchableOpacity>
     );
   };
 
   const renderDropdown = () => {
     return (
-      <Modal visible={visible} transparent animationType="none">
+      <Modal visible={visible} transparent animationType="fade">
         <TouchableOpacity
           style={styles.overlay}
           onPress={() => setVisible(false)}>
           <View style={[styles.dropdown, {top: dropdownTop}]}>
             <FlatList
-              overScrollMode="never"
               bounces={false}
               data={list}
               renderItem={renderItem}
               keyExtractor={(item, index) => `${item}-${index}`}
               scrollEnabled
               nestedScrollEnabled
+              showsVerticalScrollIndicator
             />
           </View>
         </TouchableOpacity>
@@ -71,9 +71,9 @@ const Dropdown = ({label, list, onSelect}) => {
         <SText style={styles.buttonText}>
           {(selected && selected) || label}
         </SText>
-        <Icon type="font-awesome" name="chevron-down" />
+        {visible ? <Icon name="arrow-up" /> : <Icon name="arrow-down" />}
+        {renderDropdown()}
       </TouchableOpacity>
-      {renderDropdown()}
     </>
   );
 };
@@ -84,8 +84,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#efefef',
     height: 50,
-    width: '90%',
+    width: '100%',
     paddingHorizontal: 10,
+    borderRadius: 10,
     zIndex: 1,
     position: 'relative',
   },
@@ -95,21 +96,24 @@ const styles = StyleSheet.create({
   },
   item: {
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderBottomWidth: 1,
   },
   overlay: {
-    width: '100%',
+    width: '75%',
     height: '100%',
   },
   dropdown: {
     position: 'absolute',
+    left: 50,
     backgroundColor: '#fff',
     width: '100%',
+    height: '25%',
     shadowColor: '#000000',
     shadowRadius: 4,
     shadowOffset: {height: 4, width: 0},
     shadowOpacity: 0.5,
+    overflow: 'scroll',
   },
 });
 
