@@ -8,12 +8,14 @@ import SText from '../../atoms/Text/SText';
 
 const EditModal = ({
   isVisible,
+  isEditing,
   title = '',
   description = '',
   onSaveModalChanges,
   onClose,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEditingModal, setIsEditingModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const [currentDescription, setCurrentDescription] = useState('');
 
@@ -22,10 +24,14 @@ const EditModal = ({
   };
 
   useEffect(() => {
+    console.log(isEditing);
     if (isVisible) {
       setModalVisible(true);
     }
-  }, [isVisible]);
+    if (isEditing) {
+      setIsEditingModal(true);
+    }
+  }, [isVisible, isEditing]);
 
   return (
     <>
@@ -66,7 +72,13 @@ const EditModal = ({
               label="Salvar"
               onPress={() => {
                 setModalVisible(!modalVisible);
-                onSaveModalChanges(selectedItem, currentDescription);
+                onSaveModalChanges(
+                  selectedItem,
+                  currentDescription,
+                  title,
+                  isEditingModal,
+                );
+                setIsEditingModal(false);
               }}
             />
           </View>

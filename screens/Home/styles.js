@@ -1,21 +1,20 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  welcomeText: {
+    color: '#000',
+    fontSize: 30,
+    marginBottom: 20,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  scrollViewContainer: {
+    padding: 30,
+    paddingBottom: 80,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  bottomButtonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
   },
 });
 

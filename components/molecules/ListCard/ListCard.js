@@ -11,8 +11,18 @@ const ListCard = ({title, description, onPressEdit, onPressDelete}) => {
         <SText style={styles.description}>{description}</SText>
       </View>
       <View style={styles.iconContainer}>
-        <IconButton iconName="pencil" iconSize={20} onPress={onPressEdit} />
-        <IconButton iconName="bin" iconSize={20} onPress={onPressDelete} />
+        <IconButton
+          iconName="pencil"
+          iconSize={20}
+          color="#007AFF"
+          onPress={onPressEdit}
+        />
+        <IconButton
+          iconName="bin"
+          iconSize={20}
+          color="#d90f0f"
+          onPress={onPressDelete}
+        />
       </View>
     </View>
   );
@@ -32,6 +42,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 1,
     marginBottom: 20,
+    minHeight: 100,
   },
   iconContainer: {
     position: 'absolute',

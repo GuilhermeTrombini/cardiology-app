@@ -1,18 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  StatusBar,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, View, StatusBar, StyleSheet} from 'react-native';
 import ButtonIcon from '../../components/atoms/Button/ButtonIcon';
-import Dropdown from '../../components/atoms/Dropdown/Dropdown';
 import SText from '../../components/atoms/Text/SText';
 import ListCard from '../../components/molecules/ListCard/ListCard';
 import EditModal from '../../components/molecules/Modal/EditModal';
-import {} from './styles';
+import styles from './styles';
 
 export const listOfHeartFields = [
   'Veia Cava Superior',
@@ -35,39 +27,37 @@ export const listOfHeartFields = [
 const HomeScreen = ({navigation}) => {
   const [diagnosticList, setDiagnosticList] = useState([]);
   const [selected, setSelected] = useState({name: '', description: ''});
-  const [currentDescription, setCurrentDescription] = useState('');
-  const [isNewDiagnostic, setIsNewDiagnostic] = useState(true);
   const [isModalVisible, setModalVisibile] = useState(false);
+  const [isEditingModal, setIsEditingModal] = useState(false);
 
   const onCloseModal = () => {
     setModalVisibile(false);
+    setIsEditingModal(false);
   };
 
-  const editItemOnList = () => {
+  const editItemOnList = item => {
     setModalVisibile(true);
+    setIsEditingModal(true);
+    setSelected(item);
   };
 
   const removeItemFromList = currentItem => {
-    let currentDiagnosticList = [];
     if (diagnosticList.length > 0) {
-      diagnosticList.map((item, index) => {
-        if (item?.name.indexOf(currentItem) !== -1) {
-          currentDiagnosticList.splice(index, 1);
-        }
-      });
+      const filtered = diagnosticList.filter(
+        item => item.name !== currentItem.name,
+      );
+      setDiagnosticList(filtered);
     }
-    setDiagnosticList(currentDiagnosticList);
   };
 
-  const addNewItemToList = (title, description) => {
+  const addNewItemToList = (title, description, oldTitle, isEditing) => {
     let currentDiagnosticList = diagnosticList;
 
     if (diagnosticList.length > 0) {
-      diagnosticList.map((item, index) => {
-        if (item?.name.indexOf({name: title, description}) !== -1) {
-          currentDiagnosticList.splice(index, 1);
-        }
-      });
+      const filtered = isEditing
+        ? diagnosticList.filter(item => item.name !== oldTitle)
+        : diagnosticList.filter(item => item.name !== title);
+      currentDiagnosticList = filtered;
     }
 
     currentDiagnosticList.push({
@@ -77,9 +67,8 @@ const HomeScreen = ({navigation}) => {
 
     setDiagnosticList(currentDiagnosticList);
     setModalVisibile(false);
+    setIsEditingModal(false);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -89,6 +78,7 @@ const HomeScreen = ({navigation}) => {
         <StatusBar barStyle={'dark-content'} />
         <EditModal
           isVisible={isModalVisible}
+          isEditing={isEditingModal}
           title={selected.name}
           description={selected.description}
           onSaveModalChanges={addNewItemToList}
@@ -96,14 +86,14 @@ const HomeScreen = ({navigation}) => {
         />
 
         <SText style={styles.welcomeText}>Bem vindo!</SText>
-        {diagnosticList.map((item, index) => {
+        {diagnosticList.map(item => {
           return (
             <ListCard
               key={item.name}
               title={item.name}
               description={item.description}
-              onPressDelete={removeItemFromList}
-              onPressEdit={editItemOnList}
+              onPressDelete={() => removeItemFromList(item)}
+              onPressEdit={() => editItemOnList(item)}
             />
           );
         })}
@@ -127,30 +117,3 @@ const HomeScreen = ({navigation}) => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  welcomeText: {
-    color: '#000',
-    fontSize: 30,
-    marginBottom: 20,
-  },
-  defaultText: {
-    color: '#000',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    color: '#000',
-  },
-  scrollViewContainer: {
-    padding: 30,
-  },
-  bottomButtonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-  },
-});

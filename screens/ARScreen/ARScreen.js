@@ -21,7 +21,6 @@ import {
 import styles from './styles';
 
 const MainScene = diagnosticList => {
-  console.log(diagnosticList);
   const [text, setText] = useState('Initializing AR...');
 
   const handlePositions = name => {
@@ -94,7 +93,6 @@ const MainScene = diagnosticList => {
     });
 
   function onInitialized(state, reason) {
-    console.log('guncelleme', state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setText('Hello World!');
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
